@@ -1,6 +1,3 @@
-# Copyright (c) HashiCorp, Inc.
-# SPDX-License-Identifier: MPL-2.0
-
 terraform {
   required_providers {
     aws = {
@@ -15,7 +12,7 @@ terraform {
   required_version = ">= 1.1.0"
 
   cloud {
-    organization = "REPLACE_ME"
+    organization = "your_organization_name_here"
 
     workspaces {
       name = "gh-actions-demo"
@@ -48,7 +45,7 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "web" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t2.micro"
-  vpc_security_group_ids = [aws_security_group.web-sg.id]
+  vpc_security_group_ids = [aws_security_group.web-sg.id]  // Replace this line
 
   user_data = <<-EOF
               #!/bin/bash
@@ -68,7 +65,7 @@ resource "aws_security_group" "web-sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  // connectivity to ubuntu mirrors is required to run `apt-get update` and `apt-get install apache2`
+  /* connectivity to ubuntu mirrors is required to run `apt-get update` and `apt-get install apache2` */
   egress {
     from_port   = 0
     to_port     = 0
